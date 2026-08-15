@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ku" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#090806">
+<title>هامان & ئیلاف — ئاهەنگی مارەیی</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;500;600;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap');
+:root{--bg:#090806;--gold:#d8b56a;--gold2:#f4dfad;--cream:#fff7e7;--muted:#b8aa91}
+*{box-sizing:border-box}
+html{background:var(--bg);scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(circle at 50% 15%,rgba(216,181,106,.12),transparent 30%),var(--bg);color:var(--cream);font-family:"Noto Kufi Arabic",sans-serif;overflow-x:hidden}
+body.locked{height:100svh;overflow:hidden}
+#opening{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;text-align:center;background:radial-gradient(circle at 50% 35%,rgba(216,181,106,.13),transparent 31%),linear-gradient(#060504,#0c0907);transition:opacity .8s,visibility .8s}
+#opening.hide{opacity:0;visibility:hidden;pointer-events:none}
+.opening{width:min(680px,94vw);padding:20px}
+.bismillah,.opening-sub,.occasion,.names{font-family:"Noto Naskh Arabic",serif}
+.bismillah{font-size:clamp(1rem,4vw,1.4rem);color:var(--gold2)}
+.opening-sub{font-size:clamp(.95rem,3.3vw,1.2rem);line-height:2;color:var(--muted);margin-top:5px}
+.occasion{font-size:clamp(1.1rem,4.5vw,1.7rem);font-weight:600;color:var(--gold2);margin-top:7px}
+.names{font-size:clamp(3rem,11vw,6rem);font-weight:600;line-height:1.05;color:var(--gold2);margin:3px 0}
+.date{font-size:.95rem;margin-top:12px}.time{color:var(--gold);font-size:.9rem}
+
+.envelope-button{display:block;position:relative;width:min(360px,84vw);height:220px;margin:24px auto 14px;border:0;padding:0;background:none;cursor:pointer;touch-action:manipulation}
+.envelope{position:absolute;inset:0;filter:drop-shadow(0 25px 35px rgba(0,0,0,.5))}
+.paper{position:absolute;z-index:2;left:10%;right:10%;top:8%;height:80%;background:linear-gradient(#fff2d5,#d8c098);display:grid;place-items:center;transform:translateY(13px);transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+.paper span{direction:ltr;font:600 2rem Georgia,serif;color:#251b0e}
+.body{position:absolute;inset:0;z-index:3;border:1px solid rgba(216,181,106,.72);border-radius:9px;background:#15110d}
+.left,.right,.bottom{position:absolute;inset:0;z-index:4}
+.left{background:#1a140e;clip-path:polygon(0 0,50% 53%,0 100%)}
+.right{background:#17120e;clip-path:polygon(100% 0,50% 53%,100% 100%)}
+.bottom{background:#1b150f;clip-path:polygon(0 100%,50% 53%,100% 100%)}
+.flap{position:absolute;inset:0;z-index:6;background:#231b12;clip-path:polygon(0 0,100% 0,50% 59%);transform-origin:top center;transition:transform .95s cubic-bezier(.2,.8,.2,1)}
+.seal{position:absolute;z-index:8;left:50%;top:58%;width:58px;height:58px;transform:translate(-50%,-50%);border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#f5e1aa,#b88c40);color:#1a130a;border:2px solid #f8e8bd;font:600 .75rem Georgia,serif;direction:ltr;transition:.5s}
+.envelope-button.open .flap{transform:rotateX(178deg)}
+.envelope-button.open .paper{transform:translateY(-78px)}
+.envelope-button.open .seal{opacity:0;transform:translate(-50%,-50%) scale(.4)}
+.tap{font-size:.72rem;color:var(--gold2)}.tap:before,.tap:after{content:"✦";color:var(--gold);margin:0 8px}
+.butterflies{position:absolute;inset:-110px;z-index:20;pointer-events:none}
+.butterfly{position:absolute;width:25px;height:19px;opacity:0;filter:drop-shadow(0 0 8px rgba(244,211,129,.9));animation:fly var(--dur) ease-out var(--delay) forwards}
+.butterfly:before,.butterfly:after{content:"";position:absolute;top:1px;width:12px;height:17px;background:linear-gradient(135deg,#fff3c9,#d1a34d 65%,#805d27);border:1px solid #f5dfa8;border-radius:90% 15% 85% 15%}
+.butterfly:before{left:0;transform-origin:right center;animation:wing .18s infinite alternate}
+.butterfly:after{right:0;transform-origin:left center;animation:wing .18s infinite alternate-reverse}
+@keyframes wing{to{transform:rotateY(62deg) scale(.78)}}
+@keyframes fly{0%{opacity:0;transform:translate(0,20px) scale(.25)}12%{opacity:1}70%{opacity:.9}100%{opacity:0;transform:translate(var(--x),var(--y)) scale(var(--s)) rotate(var(--r))}}
+
+.ayah{max-width:820px;margin:0 auto 48px;padding:0 8px}
+.ayah-bismillah{font:500 clamp(1.05rem,4vw,1.45rem)/2 "Noto Naskh Arabic";color:var(--gold2);margin-bottom:12px}
+.ayah-text{font:400 clamp(1.18rem,4.1vw,1.75rem)/2.15 "Noto Naskh Arabic";color:#f5ead3}
+.ayah-ref{font:400 .72rem "Noto Kufi Arabic";color:var(--gold);margin-top:13px}
+main{opacity:0}main.show{animation:reveal .8s forwards}@keyframes reveal{to{opacity:1}}
+section{min-height:100svh;padding:70px 18px;display:grid;place-items:center;text-align:center}
+.container{width:min(900px,100%)}.label{color:var(--gold);font-size:.75rem}
+h2{font:500 clamp(2rem,7vw,4rem) "Noto Naskh Arabic";margin:0 0 26px}
+.hero h2{font-size:1.25rem;color:var(--gold2);margin:0}
+.hero-names{font:600 clamp(3.2rem,12vw,7rem) "Noto Naskh Arabic";color:var(--gold2);margin:7px 0}
+.hero-date{color:var(--muted)}
+.date-card{max-width:700px;margin:auto;padding:24px;border-block:1px solid rgba(216,181,106,.3);display:grid;grid-template-columns:1fr auto 1fr;gap:18px}
+.date-card strong{font:500 2.7rem "Noto Naskh Arabic";color:var(--gold2)}
+.date-card span{display:block;color:var(--muted);font-size:.7rem}
+.divider{width:1px;height:55px;background:rgba(216,181,106,.3)}
+.countdown{max-width:760px;margin:42px auto 0;display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.unit{border:1px solid rgba(216,181,106,.3);padding:14px 2px;background:rgba(255,255,255,.02)}
+.unit b{display:block;font:500 clamp(1.8rem,7vw,3.5rem) "Noto Naskh Arabic";color:var(--gold2)}
+.unit span{font-size:.58rem;color:var(--muted)}
+.location{min-height:auto;padding-block:90px}
+.box{max-width:760px;margin:auto;border:1px solid rgba(216,181,106,.3);padding:38px 22px;background:rgba(255,255,255,.02)}
+.message{font:400 clamp(1rem,3.4vw,1.35rem)/2.35 "Noto Naskh Arabic";color:var(--muted)}
+.map{display:inline-block;margin-top:20px;padding:14px 27px;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#17120a;text-decoration:none;font-weight:700;font-size:.78rem}
+.closing{min-height:70svh;background:radial-gradient(circle,rgba(216,181,106,.08),transparent 45%)}
+.mark{font:600 1.9rem Georgia,serif;color:var(--gold);direction:ltr}
+.music{position:fixed;z-index:100000;left:18px;bottom:18px;width:45px;height:45px;border-radius:50%;border:1px solid rgba(216,181,106,.55);background:rgba(12,10,8,.88);color:var(--gold2);font:600 1.1rem Georgia,serif;cursor:pointer;display:none}
+.music.visible{display:block}
+.music.off{opacity:.6}
+footer{text-align:center;padding:22px;color:#555;font-size:.55rem}
+@media(max-width:560px){.envelope-button{height:200px}.date-card{grid-template-columns:1fr}.divider{width:60px;height:1px;margin:auto}.countdown{gap:5px}.unit{padding:12px 1px}.map{width:100%}}
+</style>
+</head>
+<body class="locked">
+
+<div id="opening">
+<div class="opening">
+<button class="envelope-button" id="envelope" aria-label="کردنەوەی بانگهێشتنامە">
+<div class="butterflies" id="butterflies"></div>
+<div class="envelope">
+<div class="paper"><span>H &amp; E</span></div>
+<div class="body"></div><div class="left"></div><div class="right"></div><div class="bottom"></div>
+<div class="flap"></div><div class="seal">H &amp; E</div>
+</div>
+</button>
+<div class="tap">بۆ کردنەوەی بانگهێشتنامەکە کرتە بکەن</div>
+</div>
+</div>
+
+<audio id="musicAudio" src="Chruli.mp3" preload="auto" loop></audio>
+<button class="music" id="musicButton" aria-label="گۆرانی">♪</button>
+
+<main id="main">
+<section class="hero"><div class="container">
+<div class="ayah">
+<div class="ayah-bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+<div class="ayah-text">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُمْ مِنْ أَنْفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ يَتَفَكَّرُونَ</div>
+<div class="ayah-ref">سورەتی ڕووم — ٢١</div>
+</div>
+<div class="label">✦ ئاهەنگی مارەیی ✦</div>
+<h2>بە خۆشحاڵییەکی زۆرەوە</h2>
+<div class="hero-names">هامان &amp; ئیلاف</div>
+<div class="hero-date">٢١ی ئاب ٢٠٢٦ &nbsp; • &nbsp; کاتژمێر ٨ی ئێوارە</div>
+</div></section>
+
+<section><div class="container">
+<div class="label">بەروار و کات</div><h2>ڕۆژی خۆشەویستی</h2>
+<div class="date-card"><div><strong>٢١</strong><span>ئاب ٢٠٢٦</span></div><div class="divider"></div><div><strong>٨:٠٠</strong><span>ئێوارە</span></div></div>
+<div class="label" style="margin-top:45px">کاتی ماوە تا ئاهەنگەکە</div>
+<div class="countdown">
+<div class="unit"><b id="days">٠٠</b><span>ڕۆژ</span></div>
+<div class="unit"><b id="hours">٠٠</b><span>کاتژمێر</span></div>
+<div class="unit"><b id="minutes">٠٠</b><span>خولەک</span></div>
+<div class="unit"><b id="seconds">٠٠</b><span>چرکە</span></div>
+</div>
+</div></section>
+
+<section class="location"><div class="container">
+<div class="label">شوێن</div><h2>لەوێ چاوەڕێتانین</h2>
+<div class="box">
+<p class="message">لەگەڵ خۆشەویستەکانمان، چاوەڕێی بەشداریتانین بۆ ئەم شەوەیەی پڕ لە خۆشی و یادەوەری.</p>
+<a class="map" href="https://maps.app.goo.gl/kuFUg5faP2udSYDv5?g_st=ic" target="_blank" rel="noopener">بینینی شوێن لە نەخشە ↗</a>
+</div></div></section>
+
+<section class="closing"><div class="container">
+<div class="mark">H &amp; E</div>
+<p class="message">خۆشحاڵ دەبین بە ئامادە بوونی بەرێزتان<br>لە ئاهەنگی مارەبڕین</p>
+</div></section>
+<footer>H &amp; E • ٢١ی ئاب ٢٠٢٦</footer>
+</main>
+
+<script>
+(function(){
+const opening=document.getElementById("opening");
+const envelope=document.getElementById("envelope");
+const butterflies=document.getElementById("butterflies");
+const main=document.getElementById("main");
+const audio=document.getElementById("musicAudio");
+const musicButton=document.getElementById("musicButton");
+
+envelope.addEventListener("click",async function(){
+ if(envelope.classList.contains("open"))return;
+ envelope.classList.add("open");
+
+ try{await audio.play();musicButton.textContent="♪";}catch(e){musicButton.textContent="♪";}
+
+ for(let i=0;i<34;i++){
+  const b=document.createElement("i");b.className="butterfly";
+  const side=i%2?-1:1;
+  b.style.left=(45+Math.random()*10)+"%";
+  b.style.top=(42+Math.random()*16)+"%";
+  b.style.setProperty("--x",(side*(80+Math.random()*230))+"px");
+  b.style.setProperty("--y",(-70-Math.random()*280)+"px");
+  b.style.setProperty("--s",(0.55+Math.random()*1.1));
+  b.style.setProperty("--r",(-60+Math.random()*120)+"deg");
+  b.style.setProperty("--dur",(1.7+Math.random()*1.4)+"s");
+  b.style.setProperty("--delay",(Math.random()*0.45)+"s");
+  butterflies.appendChild(b);
+ }
+
+ setTimeout(function(){
+  opening.classList.add("hide");
+  main.classList.add("show");
+  document.body.classList.remove("locked");
+  musicButton.classList.add("visible");
+ },1850);
+});
+
+musicButton.addEventListener("click",function(){
+ if(audio.paused){
+  audio.play().then(()=>{musicButton.textContent="♪";musicButton.classList.remove("off")}).catch(()=>{});
+ }else{
+  audio.pause();musicButton.textContent="🔇";musicButton.classList.add("off");
+ }
+});
+
+const target=new Date("2026-08-21T20:00:00+03:00").getTime();
+const digits=["٠","١","٢","٣","٤","٥","٦","٧","٨","٩"];
+function ar(n){return String(n).split("").map(c=>digits[Number(c)]??c).join("")}
+function updateCountdown(){
+ let left=Math.max(0,target-Date.now());
+ const d=Math.floor(left/86400000);
+ const h=Math.floor(left/3600000)%24;
+ const m=Math.floor(left/60000)%60;
+ const s=Math.floor(left/1000)%60;
+ document.getElementById("days").textContent=ar(String(d).padStart(2,"0"));
+ document.getElementById("hours").textContent=ar(String(h).padStart(2,"0"));
+ document.getElementById("minutes").textContent=ar(String(m).padStart(2,"0"));
+ document.getElementById("seconds").textContent=ar(String(s).padStart(2,"0"));
+}
+updateCountdown();setInterval(updateCountdown,1000);
+})();
+</script>
+</body>
+</html>
